@@ -4,6 +4,18 @@ const port = process.env.PORT
 
 
 
+// importiamo il roputer delle pizze
+const filmsRouter = require('./routers/films');
+
+
+// importiamo il middleware di gestione errore server
+// const errorsHandler = require("./middlewares/errorsHandler");
+
+// importiamo il middleware di gestione errore 404
+// const notFound = require("./middlewares/notFound");
+
+// importiamo il middleware di gestione path imgs
+// const imagePathMiddleware = require('./middlewares/imagePath');
 
 
 
@@ -19,3 +31,14 @@ app.use(express.static('public'));
 // Questo è necessario per poter leggere i dati inviati nel corpo di una richiesta POST o PUT
 // Express trasforma automaticamente il body della richiesta in un oggetto JavaScript accessibile tramite req.body
 app.use(express.json());
+
+
+
+// definiamo la rotta home
+app.get('/api', (req, res) => {
+    res.send("Ciao sono la rotta Home, dell'app di recensione film");
+})
+
+
+// utilizziamo la rotta dei libri andando a definire la parte iniziale delle rotte
+app.use("/api/books", filmsRouter)
