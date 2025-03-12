@@ -39,7 +39,7 @@ function show(req, res) {
 
 
     // prepariamo la query di richiesta
-    const reviewSql = "SELECT * FROM reviews WHERE movies_id = ?";
+    const reviewSql = "SELECT * FROM reviews WHERE movie_id = ?";
 
     // richiediamo i dati del singolo libro
     connection.query(detailFilm, [id], (err, filmResult) => {
