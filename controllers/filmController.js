@@ -29,6 +29,57 @@ function index(req, res) {
 }
 
 
+function show(req, res) {
+
+    // recuperiamo l'id dai params
+    const { id } = req.params;
+
+    // prepariamo la query di richiesta
+    const detailFilm = "SELECT * FROM movies WHERE movies.id = ?";
+
+
+    // prepariamo la query di richiesta
+    const reviewSql = "SELECT * FROM reviews WHERE movies_id = ?";
+
+    // richiediamo i dati del singolo libro
+    connection.query(detailFilm, [id], (err, filmResult) => {
+        // se la query non va a buon fine
+        if (err) return res.status(500).json({ error: 'Database query failed' });
+        if (filmResult.length === 0) return res.status(404).json({ error: 'Movie not found' });
+
+        // se tutto funziona
+        // res.json(bookResult[0]);
+        const film = filmResult[0];
+
+        connection.query(reviewSql, [id], (err, reviewResult) => {
+            // se la query non va a buon fine
+            if (err) return res.status(500).json({ error: 'Database query failed' });
+
+            // aggiorniamo l'oggetto book con le review ritornate
+            film.reviews = reviewResult;
+
+            // aggiungiamo il valore path img da middleware
+            film.image = req.imagePath + film.image;
+
+            // ritorniamo l'oggetto completo
+            res.json(film);
+        });
+
+
+
+    });
+
+
+
+
+}
+
+
+
+
+
+// esportiamo tutto
+module.exports = { index, show };
 
 
 
@@ -48,4 +99,5 @@ function index(req, res) {
 
 
 
-module.exports = { index, }
+
+
